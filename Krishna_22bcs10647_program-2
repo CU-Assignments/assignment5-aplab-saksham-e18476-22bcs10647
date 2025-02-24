@@ -1,0 +1,51 @@
+import java.util.Random;
+
+public class KthLargestQuickSelect {
+    public static int findKthLargest(int[] nums, int k) {
+        return quickSelect(nums, 0, nums.length - 1, nums.length - k);
+    }
+
+    private static int quickSelect(int[] nums, int left, int right, int index) {
+        if (left == right) {
+            return nums[left];
+        }
+
+        int pivotIndex = partition(nums, left, right);
+        
+        if (pivotIndex == index) {
+            return nums[pivotIndex];
+        } else if (pivotIndex < index) {
+            return quickSelect(nums, pivotIndex + 1, right, index);
+        } else {
+            return quickSelect(nums, left, pivotIndex - 1, index);
+        }
+    }
+
+    private static int partition(int[] nums, int left, int right) {
+        int pivot = nums[right];  // Pivot as last element
+        int i = left;
+
+        for (int j = left; j < right; j++) {
+            if (nums[j] < pivot) {
+                swap(nums, i, j);
+                i++;
+            }
+        }
+        swap(nums, i, right);
+        return i;
+    }
+
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        int[] nums1 = {3, 2, 1, 5, 6, 4};
+        int[] nums2 = {3, 2, 3, 1, 2, 4, 5, 5, 6};
+
+        System.out.println(findKthLargest(nums1, 2)); // Output: 5
+        System.out.println(findKthLargest(nums2, 4)); // Output: 4
+    }
+}
